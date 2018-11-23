@@ -101,24 +101,30 @@ public class CulminatingTicTacToe {
     public static String[][] updateBoard(String[][] gameboard, int placement, Scanner scan, String character) {
         int num = 0;
         int j = 0;
-        try {
-            for (int i = 0; i < 3; i++) {
-                for (int k = 6; k > 0; k -= 2) {
-                    num = ((k % 3) + 1) + i * 3;
-                    j = (k % 3);
+        boolean worked = false;
 
-                    if (placement == num) {
-                        if (gameboard[i][j].equals("-")) {
-                            gameboard[i][j] = character;
-                        } else {
-                            System.out.println("There is already something there. Please enter a different number:");
-                            throw new Exception();
+        while (!worked) {
+            try {
+                for (int i = 0; i < 3; i++) {
+                    for (int k = 6; k > 0; k -= 2) {
+                        num = ((k % 3) + 1) + i * 3;
+                        j = (k % 3);
+
+                        if (placement == num) {
+                            if (gameboard[i][j].equals("-")) {
+                                gameboard[i][j] = character;
+                                worked = true;
+                            } else {
+                                System.out.println("There is already something there. Please enter a different number:");
+                                throw new Exception();
+                            }
                         }
                     }
                 }
+            } catch (Exception e) {
+                System.out.println("There is already something there. Please enter a difeerent integer between 1 and 9:");
+                placement = getInput(scan);
             }
-        } catch (Exception e) {
-
         }
         return gameboard;
     }
