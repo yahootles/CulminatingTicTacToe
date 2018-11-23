@@ -26,6 +26,8 @@ public class CulminatingTicTacToe {
 
         //declare variables
         int winner = 0;
+        int input = 0;
+        int numEntered = 0;
         String[][] gameboard = {{"-", "-", "-"}, {"-", "-", "-"}, {"-", "-", "-"}};
         String output = "";
 
@@ -33,12 +35,28 @@ public class CulminatingTicTacToe {
         output = getGameboardString(gameboard);
         System.out.println(output);
 
-        gameboard = updateBoard(gameboard, 3, kinput, P1);
-
-        output = getGameboardString(gameboard);
-        System.out.println(output);
+//        gameboard = updateBoard(gameboard, 3, kinput, P1);
         while (winner == 0) {
-            System.exit(0);
+            System.out.println("Player 1's turn. Please enter a number from 1-9. The numbers correspond to position on the board.");
+            input = getInput(kinput);
+            gameboard = updateBoard(gameboard, input, kinput, P1);
+            output = getGameboardString(gameboard);
+            numEntered++;
+            System.out.println(output);
+
+            if(numEntered>=9){
+                winner = 3;
+            }
+            
+            System.out.println("Player 2's turn. Please enter a number from 1-9. The numbers correspond to position on the board.");
+            input = getInput(kinput);
+            gameboard = updateBoard(gameboard, input, kinput, P2);
+            output = getGameboardString(gameboard);
+            numEntered++;
+            System.out.println(output);
+            
+
+//            System.exit(0);
         }
     }
 
@@ -86,10 +104,10 @@ public class CulminatingTicTacToe {
         while (!valid) {
             try {
                 input = scan.nextInt();
-
                 if (input < 1 || input > 9) {
                     throw new Exception();
                 }
+                valid = true;
             } catch (Exception e) {
                 System.out.println("That is not valid input. Please enter an integer from 1 to 9.");
             }
@@ -98,34 +116,52 @@ public class CulminatingTicTacToe {
         return input;
     }
 
+    /**
+     * Method used to update the board
+     * @param gameboard - the board you wish to use
+     * @param placement - which position the user wants to put their marker in
+     * @param scan - scanner in case something is already in the position
+     * @param character - the letter being used as a marker
+     * @return - updated gameboard
+     */
     public static String[][] updateBoard(String[][] gameboard, int placement, Scanner scan, String character) {
         int num = 0;
         int j = 0;
         boolean worked = false;
 
+        //loops through until the player enters a 
         while (!worked) {
             try {
                 for (int i = 0; i < 3; i++) {
                     for (int k = 6; k > 0; k -= 2) {
+                        //each time the loop runs it increases by 1
                         num = ((k % 3) + 1) + i * 3;
+                        //number between 0 and 2, which is used to place the string in the 2d array
                         j = (k % 3);
 
+                        //check to see if it is the right position
                         if (placement == num) {
+                            //check to see if neither player has placed something in this slot
                             if (gameboard[i][j].equals("-")) {
                                 gameboard[i][j] = character;
                                 worked = true;
                             } else {
-                                System.out.println("There is already something there. Please enter a different number:");
+                                //make them input another number
                                 throw new Exception();
                             }
                         }
                     }
                 }
             } catch (Exception e) {
-                System.out.println("There is already something there. Please enter a difeerent integer between 1 and 9:");
+                System.out.println("There is already something there. Please enter a different integer between 1 and 9:");
                 placement = getInput(scan);
             }
         }
         return gameboard;
+    }
+    
+    public static int checkWinner(String[][] gameboard){
+        
+        return 0;
     }
 }
